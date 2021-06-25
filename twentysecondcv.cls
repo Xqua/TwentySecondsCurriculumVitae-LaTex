@@ -17,7 +17,7 @@
 \RequirePackage{pgffor}
 \RequirePackage{marvosym}
 \RequirePackage{parskip}
-
+\RequirePackage[hidelinks]{hyperref}
 
 \newbool{icon}
 \DeclareOption{icon}{%
@@ -50,7 +50,7 @@
 \definecolor{purple}{HTML}{D3A4F9}
 \definecolor{red}{HTML}{FB0B00}
 \definecolor{blue}{HTML}{6CE0F1}
-\definecolor{mainblue}{HTML}{0E5484}
+\definecolor{mainblue}{HTML}{01775d}
 \definecolor{cerulean}{HTML}{007BA7}
 \definecolor{maingray}{HTML}{B9B9B9}
 \definecolor{maindarkgray}{HTML}{B3B3B3}
@@ -93,6 +93,7 @@
 
 \newcommand{\cvdate}[1]{\renewcommand{\givencvdate}{#1}}
 \newcommand{\cvmail}[1]{\renewcommand{\givencvmail}{#1}}
+\newcommand{\cvmailjogl}[1]{\renewcommand{\givencvmailjogl}{#1}}
 \newcommand{\cvnumberphone}[1]{\renewcommand{\givennumberphone}{#1}}
 \newcommand{\cvaddress}[1]{\renewcommand{\givencvaddress}{#1}}
 \newcommand{\cvsite}[1]{\renewcommand{\givencvsite}{#1}}
@@ -104,6 +105,7 @@
 \newcommand{\givencvname}{REQUIRED!}
 \newcommand{\givencvdate}{}
 \newcommand{\givencvmail}{}
+\newcommand{\givencvmailjogl}{}
 \newcommand{\givennumberphone}{}
 \newcommand{\givencvaddress}{} 
 \newcommand{\givenaboutme}{}
@@ -142,7 +144,60 @@
 \end{tikzpicture}
 }
 }
+
 \newcommand{\givenskill}{}
+
+\newcommand\languages[1]{ 
+
+\renewcommand{\givenlanguages}{
+\noindent
+\begin{tikzpicture}
+\foreach [count=\i] \x/\y in {#1}
+{
+  \draw[fill=maingray,maingray] (0,-\i) rectangle (6,-\i+0.4);
+  \draw[fill=white,mainblue](0,-\i) rectangle (1.2*\y,-\i+0.4);
+  \node [above right ] at (0,-\i+0.4) {\x};
+  \foreach \z in {0,1,2,...,10}
+  {
+    \coordinate (A\z) at ($(0,-\i)+(1.2*\z*0.5cm,0)$) {};
+    \ifodd\z
+        \draw[white] ($(A\z)$) -- ($(A\z)+(0,2.5pt)$);
+    \else
+        \draw[white] ($(A\z)$) -- ($(A\z)+(0,5pt)$);
+    \fi
+  }
+}
+\end{tikzpicture}
+}
+}
+
+\newcommand{\givenlanguages}{}
+
+\newcommand\codinglanguages[1]{
+
+\renewcommand{\givencodinglanguages}{
+\noindent
+\begin{tikzpicture}
+\foreach [count=\i] \x/\y in {#1}
+{
+  \draw[fill=maingray,maingray] (0,-\i) rectangle (6,-\i+0.4);
+  \draw[fill=white,mainblue](0,-\i) rectangle (1.2*\y,-\i+0.4);
+  \node [above right ] at (0,-\i+0.4) {\x};
+  \foreach \z in {0,1,2,...,10}
+  {
+    \coordinate (A\z) at ($(0,-\i)+(1.2*\z*0.5cm,0)$) {};
+    \ifodd\z
+        \draw[white] ($(A\z)$) -- ($(A\z)+(0,2.5pt)$);
+    \else
+        \draw[white] ($(A\z)$) -- ($(A\z)+(0,5pt)$);
+    \fi
+  }
+}
+\end{tikzpicture}
+}
+}
+
+\newcommand{\givencodinglanguages}{}
 
 \newcommand\skillstext[1]{ 
 
@@ -159,8 +214,6 @@
 
 
 \newcommand{\giventextskill}{}
-
-
   
 \newcommand{\makeprofile}
 {
@@ -190,28 +243,55 @@
 \ifthenelse{\equal{\givencvdate}{}}{}{\textsc{\Large\icon{\Info}} & \givencvdate\\}
 \ifthenelse{\equal{\givencvaddress}{}}{}{\textsc{\Large\icon{\Letter}} & \givencvaddress\\}
 \ifthenelse{\equal{\givennumberphone}{}}{}{\textsc{\Large\icon{\Telefon}} & \givennumberphone\\}
-\ifthenelse{\equal{\givencvsite}{}}{}{\textsc{\Large\icon{\Mundus}} & \href{\givencvsite}{\textcolor{cerulean}\givencvsite}\\}
+\ifthenelse{\equal{\givencvsite}{}}{}{\textsc{\Large\icon{\Mundus}} & \href{\givencvsite}{\givencvsite}\\}
+\ifthenelse{\equal{\givencvmailjogl}{}}{}{\textsc{\large\icon{@}} & \href{mailto:\givencvmailjogl}{\givencvmailjogl}\\}
 \ifthenelse{\equal{\givencvmail}{}}{}{\textsc{\large\icon{@}} & \href{mailto:\givencvmail}{\givencvmail}}
 \end{tabular}
 
+\vspace{15pt}
+\profilesection{About me}{2.6cm}
 
-\profilesection{About me}{3.2cm}
 \givenaboutme
-
-
-\profilesection{Skill}{5cm}
-\givenskill
-\giventextskill
-\noindent
-\scriptsize
-\noindent
-(*)[The skill scale is from 0 (Fundamental Awareness) to 6 (Expert).]
 
 \end{flushleft}
 \end{textblock}
 \vspace{-10pt}
  }
 
+
+\newcommand{\makeprofileskills}
+{
+\begin{tikzpicture}[remember picture,overlay]
+   	 \node [rectangle, fill=asidecolor, anchor=north, minimum width=9.90cm, minimum height=\paperheight+1cm] (box) at (-5cm,0.5cm){};
+\end{tikzpicture}
+
+\begin{textblock}{6}(0.5, 0.2)
+\begin{flushleft}
+\hspace{13pt}
+
+\profilesection{Skills}{4cm}
+\givenskill
+\giventextskill
+
+\vspace{15pt}
+\profilesection{Programming}{1.2cm}
+\givencodinglanguages
+
+
+\vspace{15pt}
+\profilesection{Languages}{2cm}
+\givenlanguages
+
+\noindent
+\scriptsize
+\noindent
+
+(*)[Scale from 1 (Beginner) to 5 (Expert).]
+
+\end{flushleft}
+\end{textblock}
+\vspace{-10pt}
+ }
 
 
 
@@ -223,6 +303,8 @@
   {%
    \round{#1#2#3}{
       \ifcase\value{colorCounter}%
+        maingray\or%
+        mainblue\or%
         maingray\or%
         mainblue\or%
         maingray\or%
@@ -316,6 +398,32 @@
   \hspace{5pt}#1&\parbox[t]{11.5cm}{%
     \textbf{#2}%
   }\\}
+
+\newcommand{\twentyitemproject}[3]{%
+  \hspace{5pt}\href{#2}{#1}&\parbox[t]{10cm}{%
+    \textbf{#3}%
+  }\\}
+
+\newcommand{\twentyitemcite}[5]{%
+  \hspace{5pt}#1&\parbox[t]{11.5cm}{%    
+    #2\\%
+    \textbf{\textit{#3}}\\
+    #4 \textbf{#5}
+  }\\}
+  
+\newcommand{\twentyitemexpertise}[3]{
+\hspace{5pt}#1&\parbox[t]{11cm}{%    
+    \textbf{#2}
+  \begin{itemize}
+    \foreach [count=\i] \x in {#3}
+    {
+      \item \x
+    }
+    \end{itemize}
+  }\\
+  \\
+}
+
 
 \setlength{\tabcolsep}{0pt}
 \newenvironment{twentyshorticon}{%
